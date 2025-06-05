@@ -17,8 +17,10 @@ export const UserProvider = ({ children }) => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/user/register`,
-        { withCredentials: true }
+        { name, email, password }, // ✅ actual request body
+        { withCredentials: true }  // ✅ axios config
       );
+
 
       toast.success(data.message);
       setUser(data.user);
@@ -38,8 +40,10 @@ export const UserProvider = ({ children }) => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/user/login`,
-        { withCredentials: true }
+        { email, password },       
+        { withCredentials: true }   
       );
+
 
       toast.success(data.message);
       setUser(data.user);
