@@ -18,10 +18,14 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["https://music-listener-app-three.vercel.app"],
+    origin: [
+      "https://music-listener-app-three.vercel.app",
+      "http://localhost:5173"
+    ],
     credentials: true,
   })
 );
+
 
 // using middlewares
 app.use(express.json());
