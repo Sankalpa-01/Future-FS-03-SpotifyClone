@@ -16,8 +16,12 @@ cloudinary.v2.config({
 
 const app = express();
 
-const allowedOrigins = ["https://music-listener-app-three.vercel.app/"];
-app.use(cors({origin: allowedOrigins}));
+app.use(
+  cors({
+    origin: ["https://music-listener-app-three.vercel.app"],
+    credentials: true,
+  })
+);
 
 // using middlewares
 app.use(express.json());
