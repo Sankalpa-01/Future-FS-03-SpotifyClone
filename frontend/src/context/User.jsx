@@ -2,6 +2,8 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
+axios.defaults.withCredentials = true;
+
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -15,7 +17,6 @@ export const UserProvider = ({ children }) => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/user/register`,
-        { name, email, password },
         { withCredentials: true }
       );
 
@@ -37,7 +38,6 @@ export const UserProvider = ({ children }) => {
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/user/login`,
-        { email, password },
         { withCredentials: true }
       );
 
