@@ -5,28 +5,15 @@ import Player from "./Player";
 
 const Layout = ({ children }) => {
   return (
-    <div className="h-screen flex flex-col bg-[#000] text-white">
-      {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
+    <div className="h-screen">
+      <div className="h-[90%] flex">
         <Sidebar />
-
-        {/* Main Body */}
-        <div className="flex-1 flex flex-col m-2 rounded-2xl bg-[#121212] shadow-lg overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-700">
-            <Navbar />
-          </div>
-
-          <div className="flex-1 overflow-y-auto px-6 py-4 custom-scroll">
-            {children}
-          </div>
+        <div className="w-[100%] m-2 px-6 pt-4 rounded bg-[#121212] text-white overflow-auto lg:w-[75%] lg:ml-0">
+          <Navbar />
+          {children}
         </div>
       </div>
-
-      {/* Player */}
-      <div className="border-t border-gray-700">
-        <Player />
-      </div>
+      <Player />
     </div>
   );
 };

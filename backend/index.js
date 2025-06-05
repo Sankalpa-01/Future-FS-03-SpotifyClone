@@ -4,7 +4,6 @@ import connectDb from "./database/db.js";
 import cookieParser from "cookie-parser";
 import cloudinary from "cloudinary";
 import path from "path";
-import cors from "cors";
 
 dotenv.config();
 
@@ -15,17 +14,6 @@ cloudinary.v2.config({
 });
 
 const app = express();
-
-app.use(
-  cors({
-    origin: [
-      "https://music-listener-app-three.vercel.app",
-      "http://localhost:5173"
-    ],
-    credentials: true,
-  })
-);
-
 
 // using middlewares
 app.use(express.json());
@@ -41,8 +29,12 @@ import songRoutes from "./routes/songRoutes.js";
 app.use("/api/user", userRoutes);
 app.use("/api/song", songRoutes);
 
-app.use("/api/*", (req, res) => {
-  res.status(404).json({ error: "API route not found" });
+const __dirname = path.resolve();
+
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
 });
 
 app.listen(port, () => {

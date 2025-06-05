@@ -32,7 +32,9 @@ const Admin = () => {
 
   const addAlbumHandler = (e) => {
     e.preventDefault();
+
     const formData = new FormData();
+
     formData.append("title", title);
     formData.append("description", description);
     formData.append("file", file);
@@ -41,7 +43,9 @@ const Admin = () => {
 
   const addSongHandler = (e) => {
     e.preventDefault();
+
     const formData = new FormData();
+
     formData.append("title", title);
     formData.append("description", description);
     formData.append("singer", singer);
@@ -53,190 +57,184 @@ const Admin = () => {
   const addThumbnailHandler = (id) => {
     const formData = new FormData();
     formData.append("file", file);
+
     addThumbnail(id, formData, setFile);
   };
 
   const deleteHandler = (id) => {
-    if (confirm("Are you sure you want to delete this song?")) {
+    if (confirm("are you sure you want to delete this song")) {
       deleteSong(id);
     }
   };
-
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-white p-6 sm:p-10">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <Link
-          to="/"
-          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full transition"
-        >
-          Home
-        </Link>
-      </div>
+    <div className="min-h-screen bg-[#212121] text-white p-8">
+      <Link
+        to="/"
+        className="bg-green-500 text-white font-bold py-2 px-4 rounded-full"
+      >
+        Go to home page
+      </Link>
+      <h2 className="text-2xl font-bold mb-6 mt-6">Add Album</h2>
 
-      {/* Add Album */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Add Album</h2>
-        <form
-          onSubmit={addAlbumHandler}
-          className="bg-[#262626] p-6 rounded-lg shadow-md space-y-4"
-        >
-          <div>
-            <label className="block text-sm mb-1">Title</label>
-            <input
-              type="text"
-              className="auth-input w-full"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Description</label>
-            <input
-              type="text"
-              className="auth-input w-full"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Thumbnail</label>
-            <input
-              type="file"
-              className="auth-input w-full"
-              accept="image/*"
-              onChange={fileChangeHandler}
-              required
-            />
-          </div>
-          <button
-            disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition w-full sm:w-32"
-          >
-            {loading ? "Please Wait..." : "Add Album"}
-          </button>
-        </form>
-      </section>
+      <form
+        onSubmit={addAlbumHandler}
+        className="bg-[#181818] p-6 rounded-lg shadow-lg"
+      >
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Title</label>
+          <input
+            type="text"
+            placeholder="Title"
+            className="auth-input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Descripiton</label>
+          <input
+            type="text"
+            placeholder="Descripiton"
+            className="auth-input"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+        </div>
 
-      {/* Add Song */}
-      <section className="mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Add Song</h2>
-        <form
-          onSubmit={addSongHandler}
-          className="bg-[#262626] p-6 rounded-lg shadow-md space-y-4"
-        >
-          <div>
-            <label className="block text-sm mb-1">Title</label>
-            <input
-              type="text"
-              className="auth-input w-full border-white"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Description</label>
-            <input
-              type="text"
-              className="auth-input w-full"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Singer</label>
-            <input
-              type="text"
-              className="auth-input w-full"
-              value={singer}
-              onChange={(e) => setSinger(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Select Album</label>
-            <select
-              className="auth-input w-full"
-              value={album}
-              onChange={(e) => setAlbum(e.target.value)}
-              required
-            >
-              <option value="">-- Select Album --</option>
-              {albums &&
-                albums.map((e, i) => (
-                  <option key={i} value={e._id}>
-                    {e.title}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm mb-1">Audio File</label>
-            <input
-              type="file"
-              className="auth-input w-full"
-              accept="audio/*"
-              onChange={fileChangeHandler}
-              required
-            />
-          </div>
-          <button
-            disabled={loading}
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition w-full sm:w-32"
-          >
-            {loading ? "Please Wait..." : "Add Song"}
-          </button>
-        </form>
-      </section>
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Thumbnail</label>
+          <input
+            type="file"
+            className="auth-input"
+            accept="image/*"
+            onChange={fileChangeHandler}
+            required
+          />
+        </div>
 
-      {/* Songs List */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">Added Songs</h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <button
+          disabled={loading}
+          className="auth-btn"
+          style={{ width: "100px" }}
+        >
+          {loading ? "Please Wait..." : "Add"}
+        </button>
+      </form>
+
+      <h2 className="text-2xl font-bold mb-6 mt-6">Add Songs</h2>
+
+      <form
+        onSubmit={addSongHandler}
+        className="bg-[#181818] p-6 rounded-lg shadow-lg"
+      >
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Title</label>
+          <input
+            type="text"
+            placeholder="Title"
+            className="auth-input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Descripiton</label>
+          <input
+            type="text"
+            placeholder="Descripiton"
+            className="auth-input"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Singer</label>
+          <input
+            type="text"
+            placeholder="Singer"
+            className="auth-input"
+            value={singer}
+            onChange={(e) => setSinger(e.target.value)}
+            required
+          />
+        </div>
+
+        <select
+          className="auth-input"
+          value={album}
+          onChange={(e) => setAlbum(e.target.value)}
+        >
+          <option value="">Choose Album</option>
+          {albums &&
+            albums.map((e, i) => (
+              <option value={e._id} key={i}>
+                {e.title}
+              </option>
+            ))}
+        </select>
+
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">audio</label>
+          <input
+            type="file"
+            className="auth-input"
+            accept="audio/*"
+            onChange={fileChangeHandler}
+            required
+          />
+        </div>
+
+        <button
+          disabled={loading}
+          className="auth-btn"
+          style={{ width: "100px" }}
+        >
+          {loading ? "Please Wait..." : "Add"}
+        </button>
+      </form>
+
+      <div className="mt-8">
+        <h3 className="text-xl font-semibold mb-4">Added Songs</h3>
+        <div className="flex justify-center md:justify-start gap-2 items-center flex-wrap">
           {songs &&
-            songs.map((song, i) => (
-              <div
-                key={i}
-                className="bg-[#262626] p-4 rounded-lg shadow-md flex flex-col items-center text-center"
-              >
-                {song.thumbnail ? (
+            songs.map((e, i) => (
+              <div key={i} className="bg-[#181818] p-4 rounded-lg shadow-md">
+                {e.thumbnail ? (
                   <img
-                    src={song.thumbnail.url}
-                    alt={song.title}
-                    className="w-48 h-48 object-cover rounded mb-4"
+                    src={e.thumbnail.url}
+                    alt=""
+                    className="mr-1 w-52 h-52"
                   />
                 ) : (
-                  <div className="flex flex-col items-center mb-4">
-                    <input
-                      type="file"
-                      onChange={fileChangeHandler}
-                      className="text-sm mb-2"
-                    />
+                  <div className="flex flex-col justify-center items-center gap-2">
+                    <input type="file" onChange={fileChangeHandler} />
                     <button
-                      onClick={() => addThumbnailHandler(song._id)}
-                      className="bg-green-500 hover:bg-green-600 text-white text-sm px-3 py-1 rounded"
+                      onClick={() => addThumbnailHandler(e._id)}
+                      className="bg-green-500 text-white px-2 py-1 rounded"
                     >
                       Add Thumbnail
                     </button>
                   </div>
                 )}
-                <h4 className="font-bold">{song.title}</h4>
-                <p className="text-gray-400 text-sm">{song.singer}</p>
-                <p className="text-gray-400 text-sm">{song.description}</p>
+
+                <h4 className="text-lg font-bold">{e.title}</h4>
+                <h4 className="text-sm text-gray-500">{e.singer}</h4>
+                <h4 className="text-sm text-gray-500">{e.description}</h4>
+
                 <button
-                  onClick={() => deleteHandler(song._id)}
-                  className="mt-3 flex items-center justify-center gap-1 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
+                  onClick={() => deleteHandler(e._id)}
+                  className="px-3 py-1 bg-red-500 text-white rounded"
                 >
-                  <MdDelete size={18} /> Delete
+                  <MdDelete />
                 </button>
               </div>
             ))}
         </div>
-      </section>
+      </div>
     </div>
   );
 };

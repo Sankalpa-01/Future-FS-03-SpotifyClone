@@ -14,7 +14,7 @@ const Home = () => {
           {albums.map((e, i) => (
             <AlbumItem
               key={i}
-              image={e.thumbnail?.url}
+              image={e.thumbnail.url}
               name={e.title}
               desc={e.description}
               id={e._id}
@@ -29,7 +29,7 @@ const Home = () => {
           {songs.map((e, i) => (
             <SongItem
               key={i}
-              image={e.thumbnail?.url}
+              image={e.thumbnail.url}
               name={e.title}
               desc={e.description}
               id={e._id}

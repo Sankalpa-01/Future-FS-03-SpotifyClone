@@ -53,7 +53,7 @@ const Sidebar = () => {
 
         {user && user.role === "admin" && (
           <button
-            className="px-4 py-1.5 bg-white text-black font-semibold text-[15px] rounded-full mt-4 pl-4"
+            className="px-4 py-1.5 bg-white text-black text-[15px] rounded-full mt-4"
             onClick={() => navigate("/admin")}
           >
             Admin Dashboard

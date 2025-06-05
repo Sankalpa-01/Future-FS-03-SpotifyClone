@@ -14,35 +14,43 @@ const Player = () => {
     prevMusic,
   } = SongData();
 
-  const audioRef = useRef(null);
-  const [volume, setVolume] = useState(1);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-
-  // Fetch song when selectedSong changes
   useEffect(() => {
     fetchSingleSong();
   }, [selectedSong]);
 
-  // Control playback based on isPlaying
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
+  const audioRef = useRef(null);
 
+  const handlePlayPause = () => {
     if (isPlaying) {
-      audio.play().catch((e) => console.warn("Playback failed:", e));
+      audioRef.current.pause();
     } else {
-      audio.pause();
+      audioRef.current.play();
     }
-  }, [isPlaying]);
+    setIsPlaying(!isPlaying);
+  };
 
-  // Setup metadata and progress tracking
+  const [volume, setVolume] = useState(1);
+
+  const handleVolumeChange = (e) => {
+    const newVolume = e.target.value;
+    setVolume(newVolume);
+    audioRef.current.volume = newVolume;
+  };
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+
   useEffect(() => {
     const audio = audioRef.current;
+
     if (!audio) return;
 
-    const handleLoadedMetaData = () => setDuration(audio.duration || 0);
-    const handleTimeUpdate = () => setProgress(audio.currentTime);
+    const handleLoadedMetaData = () => {
+      setDuration(audio.duration);
+    };
+
+    const handleTimeUpdate = () => {
+      setProgress(audio.currentTime);
+    };
 
     audio.addEventListener("loadedmetadata", handleLoadedMetaData);
     audio.addEventListener("timeupdate", handleTimeUpdate);
@@ -53,86 +61,77 @@ const Player = () => {
     };
   }, [song]);
 
-  const handlePlayPause = () => {
-    setIsPlaying((prev) => !prev);
-  };
-
   const handleProgressChange = (e) => {
     const newTime = (e.target.value / 100) * duration;
     audioRef.current.currentTime = newTime;
     setProgress(newTime);
   };
-
-  const handleVolumeChange = (e) => {
-    const newVolume = parseFloat(e.target.value);
-    setVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
-    }
-  };
-
   return (
     <div>
-      {song && song.audio && (
+      {song && (
         <div className="h-[10%] bg-black flex justify-between items-center text-white px-4">
-          {/* Song Info */}
           <div className="lg:flex items-center gap-4">
             <img
               src={
-                song.thumbnail ? song.thumbnail.url : "https://via.placeholder.com/50"
+                song.thumbnail
+                  ? song.thumbnail.url
+                  : "https://via.placeholder.com/50"
               }
-              alt="Thumbnail"
-              className="w-12 h-12 object-cover rounded"
+              className="w-12"
+              alt=""
             />
             <div className="hidden md:block">
-              <p className="font-semibold">{song.title}</p>
-              <p className="text-sm text-gray-400">
-                {song.description ? song.description.slice(0, 30) + "..." : ""}
-              </p>
+              <p>{song.title}</p>
+              <p>{song.description && song.description.slice(0, 30)}...</p>
             </div>
           </div>
 
-          {/* Audio Controls */}
           <div className="flex flex-col items-center gap-1 m-auto">
-            <audio ref={audioRef} src={song.audio.url} />
+            {song && song.audio && (
+              <>
+                {isPlaying ? (
+                  <audio ref={audioRef} src={song.audio.url} autoPlay />
+                ) : (
+                  <audio ref={audioRef} src={song.audio.url} />
+                )}
+              </>
+            )}
 
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={duration ? (progress / duration) * 100 : 0}
-              onChange={handleProgressChange}
-              className="progress-bar w-[120px] md:w-[300px] text-green-400"
-            />
+            <div className="w-full flex items-center font-thin text-green-400">
+              <input
+                type="range"
+                min={"0"}
+                max={"100"}
+                className="progress-bar w-[120px] md:w-[300px]"
+                value={(progress / duration) * 100}
+                onChange={handleProgressChange}
+              />
+            </div>
 
-            <div className="flex items-center gap-4">
-              <button onClick={prevMusic} className="text-xl">
+            <div className="flex justify-center items-center gap-4">
+              <span className="cursor-pointer" onClick={prevMusic}>
                 <GrChapterPrevious />
-              </button>
-
+              </span>
               <button
-                onClick={handlePlayPause}
                 className="bg-white text-black rounded-full p-2"
+                onClick={handlePlayPause}
               >
                 {isPlaying ? <FaPause /> : <FaPlay />}
               </button>
-
-              <button onClick={nextMusic} className="text-xl">
+              <span className="cursor-pointer" onClick={nextMusic}>
                 <GrChapterNext />
-              </button>
+              </span>
             </div>
           </div>
-
-          {/* Volume Control */}
           <div className="flex items-center">
             <input
               type="range"
-              min={0}
-              max={1}
-              step={0.01}
+              className="w-16 md:w-32"
+              min={"0"}
+              max={"1"}
+              step={"0.01"}
               value={volume}
               onChange={handleVolumeChange}
-              className="w-16 md:w-32"
             />
           </div>
         </div>

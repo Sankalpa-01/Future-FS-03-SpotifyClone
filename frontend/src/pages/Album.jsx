@@ -31,7 +31,6 @@ const Album = () => {
   const savePlayListHandler = (id) => {
     addToPlaylist(id);
   };
-
   return (
     <Layout>
       {albumData && (
@@ -39,23 +38,23 @@ const Album = () => {
           <div className="mt-10 flex gap-8 flex-col md:flex-row md:items-center">
             {albumData.thumbnail && (
               <img
-                src={albumData.thumbnail?.url}
+                src={albumData.thumbnail.url}
                 className="w-48 rounded"
-                alt="Album Thumbnail"
+                alt=""
               />
             )}
 
             <div className="flex flex-col">
               <p>Playlist</p>
               <h2 className="text-3xl font-bold mb-4 md:text-5xl">
-                {albumData.title} Playlist
+                {albumData.title} PlayList
               </h2>
               <h4>{albumData.description}</h4>
               <p className="mt-1">
                 <img
                   src={assets.spotify_logo}
                   className="inline-block w-6"
-                  alt="Spotify"
+                  alt=""
                 />
               </p>
             </div>
@@ -71,7 +70,6 @@ const Album = () => {
           </div>
 
           <hr />
-
           {albumSong &&
             albumSong.map((e, i) => (
               <div
@@ -81,32 +79,30 @@ const Album = () => {
                 <p className="text-white">
                   <b className="mr-4 text-[#a7a7a7]">{i + 1}</b>
                   <img
-                    src={e?.thumbnail?.url || "/default-thumbnail.jpg"}
+                    src={e.thumbnail.url}
                     className="inline w-10 mr-5"
-                    alt={e?.title || "No title"}
+                    alt=""
                   />
-                  {e.title || "Untitled"}
+                  {e.title}
                 </p>
-                <p className="text-[15px]">{e.singer || "Unknown Artist"}</p>
+                <p className="text-[15px]">{e.singer}</p>
                 <p className="text-[15px] hidden sm:block">
-                  {e.description
-                    ? `${e.description.slice(0, 20)}...`
-                    : "No description"}
+                  {e.description.slice(0, 20)}...
                 </p>
-                <div className="flex justify-center items-center gap-5">
-                  <span
-                    className="text-[15px] text-center cursor-pointer"
+                <p className="flex justify-center items-center gap-5">
+                  <p
+                    className="text-[15px] text-center"
                     onClick={() => savePlayListHandler(e._id)}
                   >
                     <FaBookmark />
-                  </span>
-                  <span
-                    className="text-[15px] text-center cursor-pointer"
+                  </p>
+                  <p
+                    className="text-[15px] text-center"
                     onClick={() => onclickHander(e._id)}
                   >
                     <FaPlay />
-                  </span>
-                </div>
+                  </p>
+                </p>
               </div>
             ))}
         </>

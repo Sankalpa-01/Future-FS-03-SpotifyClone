@@ -16,13 +16,11 @@ const router = express.Router();
 
 router.post("/album/new", isAuth, uploadFile, createAlbum);
 router.get("/album/all", isAuth, getAllAlbums);
-router.get("/album/:id", isAuth, getAllSongsByAlbum); // <-- move this up
-
+router.post("/new", isAuth, uploadFile, addSong);
+router.post("/:id", isAuth, uploadFile, addThumbnail);
 router.get("/single/:id", isAuth, getSingleSong);
 router.delete("/:id", isAuth, deleteSong);
-router.post("/new", isAuth, uploadFile, addSong);
-router.patch("/thumbnail/:id", isAuth, uploadFile, addThumbnail);
- // <-- keep general :id routes last
 router.get("/all", isAuth, getAllSongs);
+router.get("/album/:id", isAuth, getAllSongsByAlbum);
 
 export default router;
