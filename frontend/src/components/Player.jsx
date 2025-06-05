@@ -15,8 +15,11 @@ const Player = () => {
   } = SongData();
 
   useEffect(() => {
-    fetchSingleSong();
+    if (selectedSong) {
+      fetchSingleSong();
+    }
   }, [selectedSong]);
+
 
   const audioRef = useRef(null);
 
@@ -75,8 +78,9 @@ const Player = () => {
               src={
                 song.thumbnail
                   ? song.thumbnail.url
-                  : "https://via.placeholder.com/50"
+                  : "https://placehold.co/50x50"
               }
+
               className="w-12"
               alt=""
             />
@@ -103,9 +107,10 @@ const Player = () => {
                 min={"0"}
                 max={"100"}
                 className="progress-bar w-[120px] md:w-[300px]"
-                value={(progress / duration) * 100}
+                value={duration ? (progress / duration) * 100 : 0}
                 onChange={handleProgressChange}
               />
+
             </div>
 
             <div className="flex justify-center items-center gap-4">

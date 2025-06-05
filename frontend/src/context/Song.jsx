@@ -78,18 +78,23 @@ export const SongProvider = ({ children }) => {
   }
 
   async function addThumbnail(id, formData, setFile) {
-    setLoading(true);
-    try {
-      const { data } = await axios.post("/api/song/" + id, formData);
-      toast.success(data.message);
-      setLoading(false);
-      fetchSongs();
-      setFile(null);
-    } catch (error) {
-      toast.error(error.response.data.message);
-      setLoading(false);
-    }
+  setLoading(true);
+  try {
+    const { data } = await axios.patch(`/api/song/thumbnail/${id}`, formData, {
+      withCredentials: true, // Important if using cookie-based auth
+    });
+    toast.success(data.message);
+    setLoading(false);
+    fetchSongs();
+    setFile(null);
+  } catch (error) {
+    console.error(error.response?.data || error.message);
+    toast.error(error.response?.data?.message || "Error uploading thumbnail");
+    setLoading(false);
   }
+}
+
+
 
   const [albums, setAlbums] = useState([]);
 
