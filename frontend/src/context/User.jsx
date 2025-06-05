@@ -10,21 +10,14 @@ export const UserProvider = ({ children }) => {
   const [btnLoading, setBtnLoading] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  async function registerUser(
-    name,
-    email,
-    password,
-    navigate,
-    fetchSongs,
-    fetchAlbums
-  ) {
+  async function registerUser(name, email, password, navigate, fetchSongs, fetchAlbums) {
     setBtnLoading(true);
     try {
-      const { data } = await axios.post("/api/user/register", {
-        name,
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/user/register`,
+        { name, email, password },
+        { withCredentials: true }
+      );
 
       toast.success(data.message);
       setUser(data.user);
@@ -34,7 +27,7 @@ export const UserProvider = ({ children }) => {
       fetchSongs();
       fetchAlbums();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Registration failed");
       setBtnLoading(false);
     }
   }
@@ -42,10 +35,11 @@ export const UserProvider = ({ children }) => {
   async function loginUser(email, password, navigate, fetchSongs, fetchAlbums) {
     setBtnLoading(true);
     try {
-      const { data } = await axios.post("/api/user/login", {
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/user/login`,
+        { email, password },
+        { withCredentials: true }
+      );
 
       toast.success(data.message);
       setUser(data.user);
@@ -55,15 +49,17 @@ export const UserProvider = ({ children }) => {
       fetchSongs();
       fetchAlbums();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Login failed");
       setBtnLoading(false);
     }
   }
 
   async function fetchUser() {
     try {
-      const { data } = await axios.get("/api/user/me");
-
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/user/me`,
+        { withCredentials: true }
+      );
       setUser(data);
       setIsAuth(true);
       setLoading(false);
@@ -76,28 +72,35 @@ export const UserProvider = ({ children }) => {
 
   async function logoutUser() {
     try {
-      const { data } = await axios.get("/api/user/logout");
-
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/user/logout`,
+        { withCredentials: true }
+      );
+      toast.success(data.message);
       window.location.reload();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Logout failed");
     }
   }
 
   async function addToPlaylist(id) {
     try {
-      const { data } = await axios.post("/api/user/song/" + id);
-
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/user/song/${id}`,
+        {},
+        { withCredentials: true }
+      );
       toast.success(data.message);
       fetchUser();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Failed to add to playlist");
     }
   }
 
   useEffect(() => {
     fetchUser();
   }, []);
+
   return (
     <UserContext.Provider
       value={{

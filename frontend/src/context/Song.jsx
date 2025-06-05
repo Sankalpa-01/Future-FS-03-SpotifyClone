@@ -22,7 +22,10 @@ export const SongProvider = ({ children }) => {
   // Fetch all songs
   async function fetchSongs() {
     try {
-      const { data } = await axios.get("/api/song/all");
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/song/all`,
+        { withCredentials: true }
+      );
       setSongs(data);
       if (data.length > 0) {
         setSelectedSong(data[0]._id);
@@ -42,7 +45,10 @@ export const SongProvider = ({ children }) => {
     }
 
     try {
-      const { data } = await axios.get("/api/song/single/" + selectedSong);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/song/single/` + selectedSong,
+        { withCredentials: true }
+      );
       setSong(data);
     } catch (error) {
       console.log(error);
@@ -53,7 +59,11 @@ export const SongProvider = ({ children }) => {
   async function addAlbum(formData, setTitle, setDescription, setFile) {
     setLoading(true);
     try {
-      const { data } = await axios.post("/api/song/album/new", formData);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/song/album/new`,
+        formData,
+        { withCredentials: true }
+      );
       toast.success(data.message);
       setLoading(false);
       fetchAlbums();
@@ -67,17 +77,14 @@ export const SongProvider = ({ children }) => {
   }
 
   // Add song
-  async function addSong(
-    formData,
-    setTitle,
-    setDescription,
-    setFile,
-    setSinger,
-    setAlbum
-  ) {
+  async function addSong(formData, setTitle, setDescription, setFile, setSinger, setAlbum) {
     setLoading(true);
     try {
-      const { data } = await axios.post("/api/song/new", formData);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/song/new`,
+        formData,
+        { withCredentials: true }
+      );
       toast.success(data.message);
       setLoading(false);
       fetchSongs();
@@ -96,7 +103,11 @@ export const SongProvider = ({ children }) => {
   async function addThumbnail(id, formData, setFile) {
     setLoading(true);
     try {
-      const { data } = await axios.post("/api/song/" + id, formData);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/song/` + id,
+        formData,
+        { withCredentials: true }
+      );
       toast.success(data.message);
       setLoading(false);
       fetchSongs();
@@ -110,7 +121,10 @@ export const SongProvider = ({ children }) => {
   // Fetch all albums
   async function fetchAlbums() {
     try {
-      const { data } = await axios.get("/api/song/album/all");
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/song/album/all`,
+        { withCredentials: true }
+      );
       setAlbums(data);
     } catch (error) {
       console.log(error);
@@ -120,7 +134,10 @@ export const SongProvider = ({ children }) => {
   // Delete song
   async function deleteSong(id) {
     try {
-      const { data } = await axios.delete("/api/song/" + id);
+      const { data } = await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}/api/song/` + id,
+        { withCredentials: true }
+      );
       toast.success(data.message);
       fetchSongs();
     } catch (error) {
@@ -131,7 +148,6 @@ export const SongProvider = ({ children }) => {
   // Next and Previous music navigation
   function nextMusic() {
     if (songs.length === 0) return;
-
     const nextIndex = (index + 1) % songs.length;
     setIndex(nextIndex);
     setSelectedSong(songs[nextIndex]._id);
@@ -139,7 +155,6 @@ export const SongProvider = ({ children }) => {
 
   function prevMusic() {
     if (songs.length === 0 || index === 0) return;
-
     const prevIndex = index - 1;
     setIndex(prevIndex);
     setSelectedSong(songs[prevIndex]._id);
@@ -148,7 +163,10 @@ export const SongProvider = ({ children }) => {
   // Fetch album songs
   async function fetchAlbumSong(id) {
     try {
-      const { data } = await axios.get("/api/song/album/" + id);
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/song/album/` + id,
+        { withCredentials: true }
+      );
       setAlbumSong(data.songs);
       setAlbumData(data.album);
     } catch (error) {
