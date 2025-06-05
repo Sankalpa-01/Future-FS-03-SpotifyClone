@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 
 const SongContext = createContext();
 
+const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 export const SongProvider = ({ children }) => {
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -23,7 +25,7 @@ export const SongProvider = ({ children }) => {
   async function fetchSongs() {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/song/all`,
+        `${API}/api/song/all`,
         { withCredentials: true }
       );
       setSongs(data);
@@ -46,7 +48,7 @@ export const SongProvider = ({ children }) => {
 
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/song/single/` + selectedSong,
+        `${API}/api/song/single/` + selectedSong,
         { withCredentials: true }
       );
       setSong(data);
@@ -60,7 +62,7 @@ export const SongProvider = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/song/album/new`,
+        `${API}/api/song/album/new`,
         formData,
         { withCredentials: true }
       );
@@ -81,7 +83,7 @@ export const SongProvider = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/song/new`,
+        `${API}/api/song/new`,
         formData,
         { withCredentials: true }
       );
@@ -104,7 +106,7 @@ export const SongProvider = ({ children }) => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/song/` + id,
+        `${API}/api/song/` + id,
         formData,
         { withCredentials: true }
       );
@@ -122,7 +124,7 @@ export const SongProvider = ({ children }) => {
   async function fetchAlbums() {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/song/album/all`,
+        `${API}/api/song/album/all`,
         { withCredentials: true }
       );
       setAlbums(data);
@@ -135,7 +137,7 @@ export const SongProvider = ({ children }) => {
   async function deleteSong(id) {
     try {
       const { data } = await axios.delete(
-        `${import.meta.env.VITE_API_BASE_URL}/api/song/` + id,
+        `${API}/api/song/` + id,
         { withCredentials: true }
       );
       toast.success(data.message);
@@ -164,7 +166,7 @@ export const SongProvider = ({ children }) => {
   async function fetchAlbumSong(id) {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/song/album/` + id,
+        `${API}/api/song/album/` + id,
         { withCredentials: true }
       );
       setAlbumSong(data.songs);

@@ -6,6 +6,8 @@ axios.defaults.withCredentials = true;
 
 const UserContext = createContext();
 
+const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState([]);
   const [isAuth, setIsAuth] = useState(false);
@@ -16,7 +18,7 @@ export const UserProvider = ({ children }) => {
     setBtnLoading(true);
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/user/register`,
+        `${API}/api/user/register`,
         { name, email, password }, // ✅ actual request body
         { withCredentials: true }  // ✅ axios config
       );
@@ -39,7 +41,7 @@ export const UserProvider = ({ children }) => {
     setBtnLoading(true);
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/user/login`,
+        `${API}/api/user/login`,
         { email, password },       
         { withCredentials: true }   
       );
@@ -61,7 +63,7 @@ export const UserProvider = ({ children }) => {
   async function fetchUser() {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/user/me`,
+        `${API}/api/user/me`,
         { withCredentials: true }
       );
       setUser(data);
@@ -77,7 +79,7 @@ export const UserProvider = ({ children }) => {
   async function logoutUser() {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/user/logout`,
+        `${API}/api/user/logout`,
         { withCredentials: true }
       );
       toast.success(data.message);
@@ -90,7 +92,7 @@ export const UserProvider = ({ children }) => {
   async function addToPlaylist(id) {
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/user/song/${id}`,
+        `${API}/api/user/song/${id}`,
         {},
         { withCredentials: true }
       );
